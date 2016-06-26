@@ -1,9 +1,9 @@
 {
     "name": "flare-audioengine",
-    "version": "0.0.0",
+    "version": "0.0.2",
     "keywords": ["util"],
     "author": "Brian Parra",
     "contributors": [],
     "dependencies": {},
-    "main" : "audioengine.js"
+    "main" : "src/audioengine.js"
 }
