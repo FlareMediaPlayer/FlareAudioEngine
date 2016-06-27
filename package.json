@@ -1,9 +1,16 @@
 {
-    "name": "flare-audioengine",
-    "version": "0.0.2",
+    "name": "flare-audio-engine",
+    "version": "0.0.0",
     "keywords": ["util"],
-    "author": "Brian Parra",
-    "contributors": [],
+    "author": "FlareMediaPlayer",
+    "contributors": ["Brian Parra"],
     "dependencies": {},
-    "main" : "src/audioengine.js"
+    "main": "src/audioengine.js",
+    "repository":
+            {
+                "type": "git"
+                ,
+                "url": "https://github.com/FlareMediaPlayer/FlareAudioEngine"
+            }
+    
 }

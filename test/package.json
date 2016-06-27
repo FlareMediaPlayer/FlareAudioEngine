@@ -1,0 +1,20 @@
+{
+    "name": "audioenginetest",
+    "version": "0.0.0",
+    "description": "Development testing",
+    "main": "test.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build" : "browserify test.js > testbuild.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+
+    },
+    "devDependencies": {
+        "browserify": "^13.0.1",
+        "browserify-shim": "^3.5.0"
+    }
+    
+}
