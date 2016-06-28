@@ -1,40 +1,48 @@
 'use strict';
 
-var AudioEngine = function (mediaPlayer) {
+var engine = class AudioEngine {
 
-    this.context = new (window.AudioContext || window.webkitAudioContext)();
-    this.audioData = null;
-    this.audioBuffer = null;
-    this.audioSource = this.context.createBufferSource();
-    this.onBootEvent = null;
+    constructor() {
 
-};
+        this.context = new (window.AudioContext || window.webkitAudioContext)();
+        this.audioData = null;
+        this.audioBuffer = null;
+        this.audioSource = this.context.createBufferSource();
+        this.onBootEvent = null;
 
-AudioEngine.prototype = {
-    boot: function (audioData) {
+    }
+    
+    boot(audioData) {
+
         this.audioData = audioData;
 
         this.context.decodeAudioData(this.audioData).then(function (buffer) {
 
             this.audioBuffer = buffer;
             this.audioSource.buffer = buffer;
+            console.log(buffer);
             this.audioSource.connect(this.context.destination);
             this.onBootEvent.call();
-            
+
         }.bind(this));
 
-    },
-    
-    setBootEvent: function (callback) {
+    }
+
+    setBootEvent(callback) {
         this.onBootEvent = callback;
-    },
-    
-    play: function (){
+    }
+
+    play() {
         this.audioSource.start(0);
     }
-};
+
+    pause() {
+
+    }
+
+}
 
 
 
-AudioEngine.prototype.constructor = AudioEngine;
-module.exports = AudioEngine; // Finally we export the audio engine class
+
+module.exports = engine; // Finally we export the audio engine class

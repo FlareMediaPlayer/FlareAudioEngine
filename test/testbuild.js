@@ -1,44 +1,50 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
+var engine = class AudioEngine {
 
-var AudioEngine = function (mediaPlayer) {
+    constructor() {
 
-    this.context = new (window.AudioContext || window.webkitAudioContext)();
-    this.audioData = null;
-    this.audioBuffer = null;
-    this.audioSource = this.context.createBufferSource();
-    this.onBootEvent = null;
+        this.context = new (window.AudioContext || window.webkitAudioContext)();
+        this.audioData = null;
+        this.audioBuffer = null;
+        this.audioSource = this.context.createBufferSource();
+        this.onBootEvent = null;
 
-};
+    }
+    boot(audioData) {
 
-AudioEngine.prototype = {
-    boot: function (audioData) {
         this.audioData = audioData;
 
         this.context.decodeAudioData(this.audioData).then(function (buffer) {
 
             this.audioBuffer = buffer;
             this.audioSource.buffer = buffer;
+            console.log(buffer);
             this.audioSource.connect(this.context.destination);
             this.onBootEvent.call();
-            
+
         }.bind(this));
 
-    },
-    
-    setBootEvent: function (callback) {
+    }
+
+    setBootEvent(callback) {
         this.onBootEvent = callback;
-    },
-    
-    play: function (){
+    }
+
+    play() {
         this.audioSource.start(0);
     }
-};
+
+    pause() {
+
+    }
+
+}
 
 
 
-AudioEngine.prototype.constructor = AudioEngine;
-module.exports = AudioEngine; // Finally we export the audio engine class
+
+module.exports = engine; // Finally we export the audio engine class
 },{}],2:[function(require,module,exports){
 (function () {
     
@@ -47,7 +53,7 @@ module.exports = AudioEngine; // Finally we export the audio engine class
     
     initPlayer = function () {
         playButton.disabled = false; //ready to play!
-    }
+    };
 
     
     var audioengine = new FlareAudioEngine(); // create new engine	
@@ -72,6 +78,12 @@ module.exports = AudioEngine; // Finally we export the audio engine class
     playButton.onclick = function(){
         audioengine.play();
     };
+    
+    var playButton2 = document.getElementById("playButton2"); 
+    var audioTest = new Audio("intro.m4a");
+    playButton2.onclick = function(){
+        audioTest.play();
+    }
 
 })();
 

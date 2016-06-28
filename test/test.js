@@ -5,7 +5,7 @@
     
     initPlayer = function () {
         playButton.disabled = false; //ready to play!
-    }
+    };
 
     
     var audioengine = new FlareAudioEngine(); // create new engine	
@@ -30,5 +30,11 @@
     playButton.onclick = function(){
         audioengine.play();
     };
+    
+    var playButton2 = document.getElementById("playButton2"); 
+    var audioTest = new Audio("intro.m4a");
+    playButton2.onclick = function(){
+        audioTest.play();
+    }
 
 })();
