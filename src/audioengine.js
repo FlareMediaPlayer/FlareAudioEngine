@@ -9,7 +9,7 @@ class AudioEngine {
         this.context = new (window.AudioContext || window.webkitAudioContext)();
         this.audioData = null;
         this.audioBuffer = null;
-        this.audioSource = this.context.createBufferSource();
+        this.audioSource = null;
         this.buffering = true;
 
         this.stateCodes = {
@@ -34,18 +34,24 @@ class AudioEngine {
         this.context.decodeAudioData(this.audioData).then(function (buffer) {
 
             this.audioBuffer = buffer;
-            this.audioSource.buffer = buffer;
-            this.audioSource.connect(this.context.destination);
             this.state.readyState = this.stateCodes[2];
-            //this.processEventQueue();
+            this.processEventQueue();
 
         }.bind(this));
+
 
     }
 
     play() {
 
         if (this.state.readyState === this.stateCodes[2]) {
+
+            this.audioSource = this.context.createBufferSource();
+            this.audioSource.buffer = this.audioBuffer;
+            this.audioSource.connect(this.context.destination);
+            //bind the handlers
+            this.audioSource.onended = this.handlePlayEnd.bind(this);
+
             this.audioSource.start(0);
         } else {
             this.eventQueue.push(this.play);
@@ -66,12 +72,16 @@ class AudioEngine {
     }
 
     processEventQueue() {
-        
-         var callback;
-         for(var i = 0; i < this.eventQueue.length; i++){
-         callback = this.eventQueue.shift();
-         callback.call();
-         }
+
+        var callback;
+        for (var i = 0; i < this.eventQueue.length; i++) {
+            callback = this.eventQueue.shift();
+            callback.call();
+        }
+    }
+
+    handlePlayEnd() {
+        console.log("ended");
     }
 
 }
@@ -99,5 +109,5 @@ var basicPlayer = class BasicPlayer extends AudioEngine {
     }
 
 }
-;
-        module.exports = basicPlayer; // Finally we export the audio engine class
+
+module.exports = basicPlayer; // Finally we export the audio engine class
