@@ -43,7 +43,7 @@ class AudioEngine {
     }
 
     play() {
-
+        
         if (this.state.readyState === this.stateCodes[2]) {
 
             this.audioSource = this.context.createBufferSource();
@@ -53,10 +53,20 @@ class AudioEngine {
             this.audioSource.onended = this.handlePlayEnd.bind(this);
 
             this.audioSource.start(0);
+            this.startTime = this.context.currentTime;
+            
         } else {
             this.eventQueue.push(this.play);
         }
 
+    }
+    
+    getCurrentTime(){
+        return this.context.currentTime;
+    }
+    
+    getStartTime(){
+        return this.startTime;
     }
 
     togglePlay() {
@@ -106,6 +116,10 @@ var basicPlayer = class BasicPlayer extends AudioEngine {
 
     processRequestData(e) {
         this.boot(e.target.response);
+    }
+    
+    getDuration(){
+        return this.audioSource.buffer.duration;
     }
 
 }
