@@ -18,7 +18,7 @@ class AudioEngine {
        
     }
 
-    play(buffer) {
+    play(buffer, offset) {
 
             this.audioSource = this.context.createBufferSource();
             this.audioSource.buffer = buffer;
@@ -26,13 +26,15 @@ class AudioEngine {
             //bind the handlers
             this.audioSource.onended = this.handlePlayEnd.bind(this);
 
-            this.audioSource.start(0);
+            this.audioSource.start(0, offset);
             this.startTime = this.context.currentTime;
-
+            return this.startTime;
     }
     
     getCurrentTime(){
+        
         return this.context.currentTime;
+        
     }
     
     getStartTime(){
@@ -48,11 +50,16 @@ class AudioEngine {
     }
 
     stop() {
-
+        
+        this.stopTime = this.context.currentTime;
+        this.audioSource.stop();
+        return this.stopTime;
+        
     }
 
-    handlePlayEnd() {
-        this.onEndedCallback.call();
+    handlePlayEnd(e) {
+        console.log(e);
+        //this.onEndedCallback.call();
     }
 
 }
