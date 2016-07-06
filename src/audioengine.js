@@ -7,6 +7,8 @@ class AudioEngine {
     constructor() {
 
         this.context = new (window.AudioContext || window.webkitAudioContext)();
+        this.gainNode = this.context.createGain();
+        this.gainNode.connect(this.context.destination);
         this.audioData = null;
         this.audioBuffer = null;
         this.audioSource = null;
@@ -22,7 +24,7 @@ class AudioEngine {
 
             this.audioSource = this.context.createBufferSource();
             this.audioSource.buffer = buffer;
-            this.audioSource.connect(this.context.destination);
+            this.audioSource.connect(this.gainNode);
             //bind the handlers
             this.audioSource.onended = this.handlePlayEnd.bind(this);
 
@@ -60,6 +62,12 @@ class AudioEngine {
     handlePlayEnd(e) {
         console.log(e);
         //this.onEndedCallback.call();
+    }
+    
+    handleVolumeChanged(valueData){
+
+        this.gainNode.gain.value = valueData.percent;
+        
     }
 
 }
